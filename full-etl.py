@@ -14,6 +14,8 @@ from tensorflow.keras.utils import to_categorical
 
 app = Flask(__name__)
 
+TOKEN_GITHUB = os.getenv("GITHUB_TOKEN", "")
+
 @app.route('/')
 def home():
     return "ETL PROCESS HISTOTALK MODEL 1/TFJS"
@@ -30,12 +32,8 @@ def etlRun():
     email = "karmaborutovvo@gmail.com"
     branch = "main"
 
-    # 💡 Lebih aman: pakai getpass agar token tidak tampil
-    # token = getpass("Masukkan GitHub Token: ")
-    token = ""
-
     # URL dengan token
-    repo_url = f"https://{username}:{token}@github.com/{org}/{repo}.git"
+    repo_url = f"https://{username}:{TOKEN_GITHUB}@github.com/{org}/{repo}.git"
 
     if os.path.isdir(repo):
         print("Folder repo ada, pindah ke dalam repo!")
@@ -218,4 +216,5 @@ def etlRun():
     return "--> Push ETL Dijalankan <--"
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.getenv("PORT2", 8081))
+    app.run(host="0.0.0.0", port=port, debug=True)
