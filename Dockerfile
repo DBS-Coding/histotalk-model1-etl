@@ -4,14 +4,24 @@ FROM python:3.11-slim
 # 2. Set working directory
 WORKDIR /etl
 
-# 3. Salin file dependency
-COPY requirements-test.txt requirements-test.txt
+# 3. Install git and other essential tools
+RUN apt-get update && \
+apt-get install -y --no-install-recommends git openssh-client && \
+rm -rf /var/lib/apt/lists/*
+# RUN apt-get update && \
+#     apt-get install -y git && \
+#     apt-get clean && \
+#     rm -rf /var/lib/apt/lists/*
 
-# 4. Install dependencies
-RUN pip install --no-cache-dir -r requirements-test.txt
 
-# 5. Salin semua file ke dalam image
+# 4. Salin file dependency
+COPY requirements-test.txt requirements-full.txt
+
+# 5. Install dependencies
+RUN pip install --no-cache-dir -r requirements-full.txt
+
+# 6. Salin semua file ke dalam image
 COPY . .
 
-# 6. Tentukan perintah saat container dijalankan
-CMD ["python", "testing-push.py"]
+# 7. Tentukan perintah saat container dijalankan
+CMD ["python", "full-etl.py"]
