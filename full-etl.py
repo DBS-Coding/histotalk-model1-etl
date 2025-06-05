@@ -10,7 +10,6 @@ import requests
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
-# import tensorflow as tf
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.models import Model
@@ -25,7 +24,7 @@ GITHUB_TOKEN = os.getenv("GITHUB_TOKEN", "")
 ETL_KEY = os.getenv("ETL_KEY")
     
 # Tempat menyimpan file model
-username = "leo42night"
+username = "Leo42night"
 org = "DBS-Coding"
 repo = "histotalk-model1-tfjs"
 email = "karmaborutovvo@gmail.com"
@@ -48,7 +47,7 @@ def getRepo():
         subprocess.run(["git", "reset", "--hard", "origin/main"], check=True)
         
         os.chdir("../")  # Kembali ke folder induk
-        app.logger.info(f"Current directory: {os.getcwd()}")
+        app.logger.info(f"PARENT DIR: {os.getcwd()}")
         
     else:
         app.logger.info("Folder repo tidak ada, CLONE REPO!!")
@@ -191,6 +190,9 @@ def run_cmd(cmd, log_prefix):
     return result
 
 def git_push(commit_message):
+    os.chdir(f"{repo}")  # Kembali ke folder induk
+    app.logger.info(f"REPO DIR: {os.getcwd()}")
+    
     run_cmd(["git", "add", "."], "Git Add")
     run_cmd(["git", "commit", "-m", commit_message], "Git Commit")
     run_cmd(["git", "push", "origin", "main"], "Git Push")

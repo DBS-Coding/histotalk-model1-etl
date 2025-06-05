@@ -1,7 +1,7 @@
-flask
+Flask
+python-dotenv
 requests
 pandas
 scikit-learn
 tensorflow
 tensorflowjs
-dotenv
