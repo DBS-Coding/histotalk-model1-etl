@@ -6,8 +6,10 @@ WORKDIR /etl
 
 # 3. Install git and other essential tools
 RUN apt-get update && \
-apt-get install -y --no-install-recommends git openssh-client && \
-rm -rf /var/lib/apt/lists/*
+    apt-get install -y --no-install-recommends git openssh-client build-essential && \
+    rm -rf /var/lib/apt/lists/* && \
+    apt-get clean && \
+    apt-get autoremove -y build-essential 
 
 # 4. Salin file dependency
 COPY requirements-test.txt requirements-full.txt
