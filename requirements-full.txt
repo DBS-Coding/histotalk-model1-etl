@@ -4,10 +4,13 @@ requests
 python-dotenv
 
 # Core
-numpy~=2.0.2
+# numpy
+# numpy~=2.0.2
 pandas
 
 # ML
 scikit-learn
-tensorflow~=2.18.0
-tensorflowjs~=4.22.0
+# tensorflow~=2.18.0
+tensorflow
+# tensorflowjs~=4.22.0
+tensorflowjs
