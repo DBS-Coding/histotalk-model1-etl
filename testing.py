@@ -67,8 +67,8 @@ def push():
     
     # buat file testing
     # Membuat file .txt dan menulis konten
-    with open("test_update.txt", "w") as file:
-        file.write("Ini adalah file tes untuk memastikan perubahan berhasil.\n")
+    with open("test_updates.txt", "w") as file:
+        file.write("Ini adalah file tes untuk memastikan perubahan berhasilkah.\n")
         file.write("Tanggal pembuatan: 4 Juni 2025\n")
     
     # ---- PUSH KE GITHUB ----

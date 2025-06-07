@@ -12,13 +12,13 @@ RUN apt-get update && \
     apt-get autoremove -y build-essential 
 
 # 4. Salin file dependency
-COPY requirements-full.txt requirements-full.txt
+COPY r-test.txt r-test.txt
 
 # 5. Install dependencies
-RUN pip install --no-cache-dir -r requirements-full.txt
+RUN pip install --no-cache-dir -r r-test.txt
 
 # 6. Salin semua file ke dalam image
 COPY . .
 
 # 7. Tentukan perintah saat container dijalankan
-CMD ["python", "full-etl.py"]
+CMD ["python", "testing.py"]

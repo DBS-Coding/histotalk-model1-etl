@@ -30,6 +30,9 @@ repo = "histotalk-model1-tfjs"
 email = "karmaborutovvo@gmail.com"
 branch = "main"
 
+if not GITHUB_TOKEN:
+    raise EnvironmentError("❌ GITHUB_TOKEN belum diset di .env atau secret Cloud Run")
+
 # URL
 repo_url = f"https://{username}:{GITHUB_TOKEN}@github.com/{org}/{repo}.git"
 dataset_url = "https://capstone-five-dusky.vercel.app/chatbot/tags/nama"
@@ -241,6 +244,11 @@ def etlRunHatta():
     gitPush(f"Hatta PUSH to Repo Dir TFJS {timestamp}")
     
     return "!! ETL Hatta Dijalankan (DB -> Train TFJS -> Push GitHub) !!"
+
+@app.errorhandler(500)
+def internal_error(error):
+    app.logger.error(f"Internal server error: {error}")
+    return "Something went wrong", 500
 
 if __name__ == '__main__':
     port = int(os.getenv("PORT", 8080))
