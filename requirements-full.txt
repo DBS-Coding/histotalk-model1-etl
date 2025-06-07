@@ -3,7 +3,7 @@ Flask
 requests
 python-dotenv
 
-# Core
+# Core (numpy depedensi tf)
 # numpy
 # numpy~=2.0.2
 pandas

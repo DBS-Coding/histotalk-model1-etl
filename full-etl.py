@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 import logging
 import os
 os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
@@ -201,6 +201,10 @@ def gitPush(commit_message):
 @app.route('/')
 def home():
     return "ETL PROCESS HISTOTALK MODEL 1/TFJS"
+
+@app.route('/ready')
+def health():
+    return jsonify({"status": "ok"}), 200
 
 @app.route('/etl-run-model1-soekarno', methods=['POST'])
 def etlRunSoekarno():
