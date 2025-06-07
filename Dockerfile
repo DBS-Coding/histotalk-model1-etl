@@ -12,7 +12,7 @@ RUN apt-get update && \
     apt-get autoremove -y build-essential 
 
 # 4. Salin file dependency
-COPY requirements-test.txt requirements-full.txt
+COPY requirements-full.txt requirements-full.txt
 
 # 5. Install dependencies
 RUN pip install --no-cache-dir -r requirements-full.txt
