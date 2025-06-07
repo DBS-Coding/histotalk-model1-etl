@@ -263,7 +263,7 @@ def pushTest():
     
     gitPush(f"Test PUSH to Repo Dir TFJS {timestamp}")
     
-    return jsonify(message="Push ETL Github Testing Dijalankan"), 201
+    return jsonify({"status": "ok","message":"Push ETL Github Testing Dijalankan"}), 201
 
 @app.errorhandler(500)
 def internal_error(error):
