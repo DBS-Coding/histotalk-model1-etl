@@ -203,7 +203,7 @@ def gitPush(commit_message):
 
 @app.route('/')
 def home():
-    return "ETL Process HISTOTALK model Text Classification: Take DB Dataset -> Model Build (Saved Model export to Tfjs) -> Export to Model Repo Github Server"
+    return "ETL Process HISTOTALK model Text Classification: Take DB Dataset -> Model Build (Saved Model export to Tfjs) -> Export to Model Repo Github Server", 200
 
 @app.route('/ready')
 def health():
@@ -225,7 +225,8 @@ def etlRunSoekarno():
     timestamp = int(time.time())  # Local time in seconds
     gitPush(f"Soekarno PUSH to Repo Dir TFJS {timestamp}")
     
-    return "!! ETL Soekarno Dijalankan (DB -> Train TFJS -> Push GitHub) !!"
+    return jsonify({"status": "ok", "message":"ETL Soekarno Dijalankan (DB -> Train TFJS -> Push GitHub)"}), 201
+
 
 @app.route('/etl-run-model1-hatta', methods=['POST'])
 def etlRunHatta():
@@ -243,7 +244,7 @@ def etlRunHatta():
     timestamp = int(time.time())  # Local time in seconds
     gitPush(f"Hatta PUSH to Repo Dir TFJS {timestamp}")
     
-    return jsonify(message="ETL Hatta Dijalankan (DB -> Train TFJS -> Push GitHub)"), 201
+    return jsonify({"status": "ok", "message":"ETL Hatta Dijalankan (DB -> Train TFJS -> Push GitHub)"}), 201
 
 
 @app.route('/push-etl-testing', methods=['POST'])
