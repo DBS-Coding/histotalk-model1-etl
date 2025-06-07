@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 
 import subprocess
 # from getpass import getpass # jika butuh input manual untuk keamana
@@ -11,9 +11,11 @@ TOKEN_GITHUB = os.getenv("GITHUB_TOKEN", "")
 @app.route('/')
 def home():
     # Cek path aktif
-    print("Current directory:", os.getcwd())
-    
     return "Push ETL TESTING"
+
+@app.route('/ready')
+def health():
+    return jsonify({"status": "ok"}), 200
 
 @app.route('/push-etl-testing', methods=['POST'])
 def push():
