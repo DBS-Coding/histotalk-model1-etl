@@ -39,15 +39,15 @@ def getRepo():
     if os.path.isdir(repo):
         app.logger.info(f"Folder repo {repo} ada, pindah ke dalam repo!")
         os.chdir(repo) #masuk ke dalam karena ada git fetch
-        app.logger.info(f"Current directory: {os.getcwd()}")
+        app.logger.info(f"\n\nREPO DIR: {os.getcwd()}\n\n")
         
         # fetching
         subprocess.run(["git", "fetch", "origin", branch], check=True)
         # sesuaikan dengan data repo agar tidak ada conflict
         subprocess.run(["git", "reset", "--hard", "origin/main"], check=True)
         
-        os.chdir("../")  # Kembali ke folder induk
-        app.logger.info(f"PARENT DIR: {os.getcwd()}")
+        os.chdir("./..")  # Kembali ke folder induk
+        app.logger.info(f"\n\nPARENT DIR: {os.getcwd()}\n\n")
         
     else:
         app.logger.info("Folder repo tidak ada, CLONE REPO!!")
@@ -57,7 +57,6 @@ def getRepo():
 
         # Clone dari organization
         subprocess.run(["git", "clone", "-b", branch, repo_url], check=True)
-
 
 def modelling(npc):
     try:
@@ -82,18 +81,18 @@ def modelling(npc):
         for lines in intent['input']:
             inputs.append(lines.lower())
             tags.append(intent['tag'])
-    app.logger.info(len(list(set(tags))))
-    app.logger.info(f"tags: {tags}")
+    # app.logger.info(len(list(set(tags))))
+    # app.logger.info(f"tags: {tags}")
     
     # 1. export into dataframe
     df = pd.DataFrame({"inputs":inputs, "tags":tags})
-    app.logger.info(df.head().to_string())
+    # app.logger.info(df.head().to_string())
     
     # 2. Encode label ke angka
     label_encoder = LabelEncoder()
     df['label'] = label_encoder.fit_transform(df['tags'])
     num_classes = len(label_encoder.classes_)
-    app.logger.info(f"Number of classes: {num_classes}")
+    # app.logger.info(f"Number of classes: {num_classes}")
 
     # 3. Split data
     X_train, X_test, y_train, y_test = train_test_split(df['inputs'], df['label'], test_size=0.2, random_state=42, stratify=df['label'])
@@ -136,8 +135,9 @@ def modelling(npc):
     app.logger.info(f"Test Loss: {loss:.2f}")
 
     # 11. Simpan model
-    # tf.saved_model.save(model, f'saved_model_{npc}')
     model.export(f'saved_model_{npc}')
+    app.logger.info(f"\n\nPARENT DIR: {os.getcwd()}\n\n")
+    
     
     # -- TFJS CONVERTER --
     # Definisikan perintah
@@ -168,13 +168,12 @@ def modelling(npc):
         
     # 1. Sort dataframe berdasarkan label
     sorted_tags = df.sort_values('label')['tags'].drop_duplicates().tolist()
-    app.logger.info(sorted_tags)
+    # app.logger.info(sorted_tags)
     # 2. Bangun dictionary baru dengan urutan sesuai label
     sorted_responses = {tag: responses[tag] for tag in sorted_tags}
     
     with open(f"{repo}/tfjs_saved_model/{npc}/content.json", "w") as f:
         json.dump(sorted_responses, f)
-
 
 def run_cmd(cmd, log_prefix):
     result = subprocess.run(cmd, capture_output=True, text=True)
@@ -189,14 +188,15 @@ def run_cmd(cmd, log_prefix):
     
     return result
 
-def git_push(commit_message):
-    os.chdir(f"{repo}")  # Kembali ke folder induk
-    app.logger.info(f"REPO DIR: {os.getcwd()}")
+def gitPush(commit_message):
+    os.chdir(f"{repo}")  # Pindah ke folder Repo
+    app.logger.info(f"\n\nREPO DIR: {os.getcwd()}\n\n")
     
     run_cmd(["git", "add", "."], "Git Add")
     run_cmd(["git", "commit", "-m", commit_message], "Git Commit")
     run_cmd(["git", "push", "origin", "main"], "Git Push")
-
+    os.chdir("./..")  # Kembali ke folder induk
+    app.logger.info(f"\n\nPARENT DIR: {os.getcwd()}\n\n")
 
 @app.route('/')
 def home():
@@ -216,7 +216,7 @@ def etlRunSoekarno():
     
     # # push ke github
     timestamp = int(time.time())  # Local time in seconds
-    git_push(f"Soekarno PUSH to Repo Dir TFJS {timestamp}")
+    gitPush(f"Soekarno PUSH to Repo Dir TFJS {timestamp}")
     
     return "!! ETL Soekarno Dijalankan (DB -> Train TFJS -> Push GitHub) !!"
 
@@ -234,10 +234,10 @@ def etlRunHatta():
     getRepo() # clone repo dari github
     modelling("hatta") # run modelling
     timestamp = int(time.time())  # Local time in seconds
-    git_push(f"Hatta PUSH to Repo Dir TFJS {timestamp}")
+    gitPush(f"Hatta PUSH to Repo Dir TFJS {timestamp}")
     
     return "!! ETL Hatta Dijalankan (DB -> Train TFJS -> Push GitHub) !!"
 
 if __name__ == '__main__':
-    port = int(os.getenv("PORT2", 8081))
+    port = int(os.getenv("PORT2", 8080))
     app.run(host="0.0.0.0", port=port, debug=False) # hentikan fitur auto-reload dan auto-debug

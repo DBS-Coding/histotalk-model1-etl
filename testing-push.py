@@ -21,7 +21,7 @@ def push():
     # os.chdir("./") # sesuaikan dengan lingkungan aplikasi
     
     # ⛅ Input informasi
-    username = "leo42night"  # akun GitHub kamu yang punya akses
+    username = "Leo42night"  # akun GitHub kamu yang punya akses
     org = "DBS-Coding"
     repo = "histotalk-model1-tfjs"
     email = "karmaborutovvo@gmail.com"
