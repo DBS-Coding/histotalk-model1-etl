@@ -12,14 +12,14 @@ TOKEN_GITHUB = os.getenv("GITHUB_TOKEN", "")
 @app.route('/')
 def home():
     # Cek path aktif
-    return "Push ETL TESTING"
+    return "Push ETL TESTING", 200
 
 @app.route('/ready')
 def health():
     return jsonify({"status": "ok"}), 200
 
 @app.route('/push-etl-testing', methods=['POST'])
-def push():
+def pushTest():
     # -- SETUP -- pindah ke folder induk repo
     # os.chdir("./") # sesuaikan dengan lingkungan aplikasi
     
@@ -91,7 +91,7 @@ def push():
     run_cmd(["git", "commit", "-m", f"testing push ({timestamp})"])
     run_cmd(["git", "push", "origin", branch])
     
-    return "--> Push ETL Testing Dijalankan <--"
+    return jsonify(message="Push ETL Github Testing Dijalankan"), 200
 
 if __name__ == '__main__':
     port = int(os.getenv("PORT", 8080))

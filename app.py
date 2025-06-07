@@ -110,8 +110,7 @@ def modelling(npc):
     test_sequences = tokenizer.texts_to_sequences(X_test)
 
     # 6. Padding
-    # max_length = max([len(x) for x in train_sequences]) # otomatis
-    max_length = 10 # statis mengikuti standar 10 classes (karena isue tfjs predict)
+    max_length = max([len(x) for x in train_sequences]) # otomatis
     X_train_padded = pad_sequences(train_sequences, maxlen=max_length, padding='post')
     X_test_padded = pad_sequences(test_sequences, maxlen=max_length, padding='post')
 
