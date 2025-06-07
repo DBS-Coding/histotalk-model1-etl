@@ -203,7 +203,7 @@ def gitPush(commit_message):
 
 @app.route('/')
 def home():
-    return "ETL PROCESS HISTOTALK MODEL 1/TFJS"
+    return "ETL Process HISTOTALK model Text Classification: Take DB Dataset -> Model Build (Saved Model export to Tfjs) -> Export to Model Repo Github Server"
 
 @app.route('/ready')
 def health():
@@ -243,7 +243,26 @@ def etlRunHatta():
     timestamp = int(time.time())  # Local time in seconds
     gitPush(f"Hatta PUSH to Repo Dir TFJS {timestamp}")
     
-    return "!! ETL Hatta Dijalankan (DB -> Train TFJS -> Push GitHub) !!"
+    return jsonify(message="ETL Hatta Dijalankan (DB -> Train TFJS -> Push GitHub)"), 201
+
+
+@app.route('/push-etl-testing', methods=['POST'])
+def pushTest():
+    app.logger.info(f"ENV: {ETL_KEY}")
+    data = request.get_json()
+    etl_key = data.get('etl_key') if data else None
+    app.logger.info(f"json: {etl_key}")
+    
+    if not ETL_KEY or not etl_key or etl_key != ETL_KEY:
+        return "Unauthorized", 401
+    
+    timestamp = int(time.time())  # Local time in secon
+    with open("test_updates.txt", "a") as file:
+        file.write(f"Log Test ETL PUSH: {timestamp}\n")
+    
+    gitPush(f"Test PUSH to Repo Dir TFJS {timestamp}")
+    
+    return jsonify(message="Push ETL Github Testing Dijalankan"), 201
 
 @app.errorhandler(500)
 def internal_error(error):

@@ -1,4 +1,5 @@
 from flask import Flask, jsonify
+import time
 
 import subprocess
 # from getpass import getpass # jika butuh input manual untuk keamana
@@ -69,9 +70,9 @@ def push():
     
     # buat file testing
     # Membuat file .txt dan menulis konten
+    timestamp = int(time.time())  # Local time in secon
     with open("test_updates.txt", "w") as file:
-        file.write("Ini adalah file tes untuk memastikan perubahan berhasilkah.\n")
-        file.write("Tanggal pembuatan: 4 Juni 2025\n")
+        file.write(f"Tanggal pembuatan: {timestamp}\n")
     
     # ---- PUSH KE GITHUB ----
     def run_cmd(cmd):
@@ -87,10 +88,10 @@ def push():
 
     # Tambah, commit, push
     run_cmd(["git", "add", "."])
-    run_cmd(["git", "commit", "-m", "testing push"])
+    run_cmd(["git", "commit", "-m", f"testing push ({timestamp})"])
     run_cmd(["git", "push", "origin", branch])
     
-    return "--> Push ETL Dijalankan <--"
+    return "--> Push ETL Testing Dijalankan <--"
 
 if __name__ == '__main__':
     port = int(os.getenv("PORT", 8080))
