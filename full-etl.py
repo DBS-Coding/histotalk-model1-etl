@@ -239,5 +239,5 @@ def etlRunHatta():
     return "!! ETL Hatta Dijalankan (DB -> Train TFJS -> Push GitHub) !!"
 
 if __name__ == '__main__':
-    port = int(os.getenv("PORT2", 8080))
+    port = int(os.getenv("PORT", 8080))
     app.run(host="0.0.0.0", port=port, debug=False) # hentikan fitur auto-reload dan auto-debug
