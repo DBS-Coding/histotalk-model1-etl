@@ -12,13 +12,13 @@ RUN apt-get update && \
     apt-get autoremove -y build-essential 
 
 # 4. Salin file dependency
-COPY r-test.txt r-test.txt
+COPY r-app.txt r-app.txt
 
 # 5. Install dependencies
-RUN pip install --no-cache-dir -r r-test.txt
+RUN pip install --no-cache-dir -r r-app.txt
 
 # 6. Salin semua file ke dalam image
 COPY . .
 
 # 7. Tentukan perintah saat container dijalankan
-CMD ["python", "testing.py"]
+CMD ["python", "app.py"]
