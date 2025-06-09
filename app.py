@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import logging
 import os
 os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
@@ -17,6 +18,8 @@ from tensorflow.keras.layers import Input, Embedding, GlobalAveragePooling1D, De
 from tensorflow.keras.utils import to_categorical
 
 app = Flask(__name__)
+CORS(app) # Allow all origin by default
+
 app.logger.setLevel(logging.DEBUG)
 
 load_dotenv()  # ⬅️ Ini penting agar .env dibaca

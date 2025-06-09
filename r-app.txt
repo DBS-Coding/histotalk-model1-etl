@@ -9,5 +9,6 @@ tensorflowjs
 
 # Web/API
 Flask
+flask-cors
 requests
 python-dotenv
